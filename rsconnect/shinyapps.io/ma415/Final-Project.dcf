@@ -1,0 +1,12 @@
+name: Final-Project
+title: Final-Project
+username:
+account: ma415
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 338355
+bundleId: 1359195
+url: https://ma415.shinyapps.io/Final-Project/
+when: 1525652644.05872
+asMultiple: FALSE
+asStatic: FALSE

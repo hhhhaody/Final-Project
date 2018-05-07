@@ -1,0 +1,207 @@
+---
+title: "Final Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(reshape2)
+```
+This project is about the weather of the NYC for the past 30 years. I analyze the temperature, precipipation, and snow condition for NYC using the historical data for Central Park from NOAA website at https://www.weather.gov/okx/CentralParkHistorical.
+
+```{r include=FALSE}
+temperature = read.csv("temperature.txt", sep = " ")
+```
+
+## Temperature
+### Time series
+First, I do the time series of the past 30 years to have a overlook of the temperature change.
+```{r echo=FALSE}
+ts <- temperature[,-14]
+ts <- as.vector(t(ts[,-1]))
+ts <- ts(ts, start = c(1989,1), frequency=12)
+ts.plot(ts,gpars=list(xlab="Year", ylab="Temperature", lty=1))
+```
+
+As the graph shows, the temperature does not seem to change much during the past 30 years, there is not much difference among different years.
+
+### Plot the annual temperature
+To have a closer view, plot the annual temperature of each year.
+```{r echo=FALSE}
+
+ggplot(data=temperature, aes(x=YEAR, y=ANNUAL, group=1)) +
+  geom_line()+
+  geom_point() + 
+  labs(title="Plot of Annual Temperature",x="Year", y = "Annual Temperature")
+```
+
+Here we can clearly see the difference since we zoom in a little bit. The annual temperatures fluctuate from 53 to 58 degrees, although the difference is not big we can see the warmer years seem to be consecutive for at least two year in a row before the annual temperature drops again.
+
+### Plot the temperature of the same month
+Looking even closer, here is the temperature graph of the same month from different years.
+```{r echo=FALSE}
+temperature_melt <- melt(temperature[, -14], id="YEAR") 
+
+ggplot(data=temperature_melt,
+       aes(x=YEAR, y=value, colour=variable)) +
+       geom_line() + geom_point()  + 
+  labs(title="Plot of Monthly Temperature",x="Year", y = "Monthly Temperature")
+```
+
+As we can see, the temperatures for NYC in Aug and Sep are the highest among 12 months, Dec, Jan, and Feb have the lowest temperatures. Notice that some months' temperature changes alot in different years. To test which month's temperature differs the most among 30 years, we compute the standard deviation of the 12 months and the year average.
+```{r echo=FALSE}
+for (month in c(2:14)) {
+  print(c(colnames(temperature)[month],sd(temperature[,month])))
+}
+```
+
+According to the numbers, the temperatures for December vary the most year by year. Jun temperatures stay stable.
+
+## Precipitation
+### Time series
+First the time series for precipitation of the past 30 years.
+```{r echo=FALSE}
+precipitation = read.csv("precipitation.txt", sep = " ")
+ts2 <- precipitation[,-14]
+ts2 <- as.vector(t(ts2[,-1]))
+ts2 <- ts(ts2, start = c(1989,1), frequency=12)
+ts.plot(ts2,gpars=list(xlab="Year", ylab="Precipitation", lty=1))
+```
+
+We can see that there are two months in which the precipitaion is dramatically different from others - 2005 Oct and 2011 Aug. Also, unlike the temperature, we can observe a obvious change in precipitation during the past 30 years. 
+
+### Plot the annual precipitation 
+To have a closer view, plot the annual precipitation of each year.
+```{r echo=FALSE}
+
+ggplot(data=precipitation, aes(x=YEAR, y=ANNUAL, group=1)) +
+  geom_line()+
+  geom_point() + 
+  labs(title="Plot of Annual Precipitation",x="Year", y = "Annual Precipitation")
+```
+
+2011 does have the largest annual precipitation as we can predict from the time series, but 2005's precipitation is moderate although it has a very large precipitation in October. The range  of the annual precipitation is between 30 to 80 in which there is a very big difference.
+
+### Plot the precipitation of the same month
+Closer, here is the precipitation graph of the same month from different years and the standard deviation of the 12 months and the year average.
+
+```{r echo=FALSE}
+precipitation_melt <- melt(precipitation[, -14], id="YEAR") 
+
+ggplot(data=precipitation_melt,
+       aes(x=YEAR, y=value, colour=variable)) +
+       geom_line() + geom_point() +
+  labs(title="Plot of Monthly Precipitation",x="Year", y = "Monthly Precipitation")
+
+for (month in c(2:14)) {
+  print(c(colnames(precipitation)[month],sd(precipitation[,month])))
+}
+
+```
+
+From the data, the precipitation of Aug varies the most. Also, there is a huge difference among the precipitation of 30 years.
+
+## Snow
+### Time series
+Again the time series.
+
+```{r echo=FALSE}
+snow = read.csv("snow.txt", sep = " ")
+ts3 <- snow[,-14]
+ts3 <- as.vector(t(ts3[,-1]))
+ts3 <- ts(ts3, start = c(1989,1), frequency=12)
+ts.plot(ts3,gpars=list(xlab="Year", ylab="Temperature", lty=1))
+```
+
+Observe there's a difference of the snow amount in each year.
+
+### Plot the annual snow
+
+Following is the plot of annual snow of the past 30 years.
+
+```{r echo=FALSE}
+ggplot(data=snow, aes(x=SEASON, y=TOTAL, group=1)) +
+  geom_line()+
+  geom_point() + 
+  labs(title="Plot of Total Snow",x="Season", y = "Total Snow") +
+  theme(text = element_text(size=10),
+        axis.text.x = element_text(angle=90, hjust=1)) 
+```
+
+Annual snow ranges from 0 to 80, we can see normally there is a peak following a local min. Also, the differences among years are clear to see.
+
+### Plot the snow of the same month
+
+Here is the snow graph of the same month from different years and the standard deviation of the 12 months and the year average. 
+
+```{r echo=FALSE}
+snow_melt <- melt(snow[, -14], id="SEASON") 
+
+ggplot(data=snow_melt,
+       aes(x=SEASON, y=value, colour=variable)) +
+    geom_point() +
+  labs(title="Plot of Monthly Snow",x="Year", y = "Monthly Snow") +
+   theme(text = element_text(size=10),
+        axis.text.x = element_text(angle=90, hjust=1)) 
+
+for (month in c(2:14)) {
+  print(c(colnames(snow)[month],sd(snow[,month])))
+}
+```
+
+According to the result, the snow in Feb varies the most indicating it is relatively unpredicable compare to the other months. Interesting to see that NYC even get snow in Jun of 2017 showing the capriciousness of weather.
+
+
+```{r echo=FALSE}
+highest = read.csv("highest.txt", sep = "\t")
+lowest =  read.csv("lowest.txt", sep = "\t")
+years = seq(1987, 2017)
+df = data.frame(years=years, highest=highest$F, lowest=lowest$F)
+```
+
+## Relations
+
+To find out if the temperature, precipatation, and snow amount are related, calculate the corvariance of each pair.
+
+### Relation of temperature and precipatation
+
+```{r echo=FALSE}
+cor(temperature$ANNUAL, precipitation$ANNUAL)
+```
+
+### Relation of temperature and snow
+
+```{r echo=FALSE}
+cor(temperature$ANNUAL, snow[-1,]$TOTAL)
+```
+
+### Relation of precipatation and snow
+
+
+```{r echo=FALSE}
+cor(precipitation$ANNUAL, snow[-1,]$TOTAL)
+```
+
+The results are very small no matter the value is positive or negative, which indicates that the three factors are not strongly related.
+
+### Plot of Highest and Lowest temperature
+
+Curious of whether of not cold winters always follow hot summers, I plot the extreme temperatures of each year and do a corvariance test of the two.
+
+```{r echo=FALSE}
+
+hl_melt <- melt(df, id="years") 
+ggplot(data=hl_melt,
+       aes(x=years, y=value, colour=variable)) +
+     geom_line() +
+    geom_point() +
+  labs(title="Plot of Highest and Lowest temperature",x="Year", y = "Temperature") 
+  
+```
+```{r echo=TRUE}
+cor(highest$F, lowest$F)
+```
+
+The highest temperature and lowest temperature has positive correlation, but the number is very small, which indicates that the largest temperature and the lowest temperature are not strongly related. So hot summers may not indicate cold winters.
+
+

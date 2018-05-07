@@ -1,0 +1,32 @@
+F	time	C
+9	December 31, 2017	-13
+-1	February 14, 2016	-18
+2	February 20, 2015	-17
+4	January 07, 2014	-16
+11	January 23, 2013	-12
+13	January 04, 2012	-11
+6	January 24, 2011	-14
+13	January 30, 2010	-11
+6	January 17, 2009	-14
+10	February 11, 2008	-12
+8	February 05, 2007	-13
+15	February 19, 2006 +	-9
+5	January 28, 2005	-15
+1	January 16, 2004 +	-17
+7	January 28, 2003 +	-14
+19	December 09, 2002 +	-7
+16	February 12, 2001	-9
+3	January 18, 2000	-16
+9	January 02, 1999	-13
+14	January 01, 1998	-10
+4	January 19, 1997	-16
+5	February 05, 1996	-15
+6	February 06, 1995	-14
+-2	January 19, 1994	-19
+7	February 07, 1993 +	-14
+11	January 19, 1992	-12
+10	January 22, 1991	-12
+7	February 26, 1990	-14
+6	December 23, 1989	-14
+5	December 12, 1988 +	-15
+4	February 15, 1987	-16
